@@ -1,0 +1,535 @@
+/* ==========================================================================
+   GAME SCREEN CSS (MÀN HÌNH CHỌN GAME - OVERLAY - CO DÃN CHUẨN ĐỒNG BỘ)
+   ========================================================================== */
+
+.game-screen {
+  --navy-deep: #090A8A;
+  --card-bg: #3D70B8;
+  --btn-blue: #242CA3;
+  --btn-blue-hover: #192085;
+
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  z-index: 100;
+  background: var(--bg-gradient);
+  background-size: cover;
+  background-position: center;
+  font-family: 'Lora', Georgia, serif;
+  color: var(--navy-deep);
+
+  /* Đồng bộ cách tính padding và khoảng cách y hệt Settings / BGM / Wallpaper */
+  padding: calc(var(--u-settings) * 3.4) calc(var(--u-settings) * 3.8);
+  padding-top: max(calc(var(--u-settings) * 3.6), env(safe-area-inset-top));
+  padding-bottom: max(calc(var(--u-settings) * 3.2), env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u-settings) * 2.6);
+  overflow: hidden;
+
+  /* Hiệu ứng ẩn/hiện Overlay đồng bộ với Settings */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(6%);
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+}
+
+.game-screen.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+.game-screen .hidden {
+  display: none !important;
+}
+
+/* 1. Thanh Header trên cùng */
+.gm-top-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: calc(var(--u-settings) * 7.2);
+  flex-shrink: 0;
+  padding: 0 calc(var(--u-settings) * 0.4);
+}
+
+.gm-icon-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--u-settings) * 7.2);
+  height: calc(var(--u-settings) * 7.2);
+  border-radius: calc(var(--u-settings) * 2.2);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: var(--navy-deep);
+  transition: transform 0.15s ease, background-color 0.2s ease;
+}
+
+.gm-icon-action-btn svg {
+  width: calc(var(--u-settings) * 5);
+  height: calc(var(--u-settings) * 5);
+  display: block;
+}
+
+.gm-icon-action-btn:active {
+  transform: scale(0.88);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* 2. Thanh Tab chia đôi 50% - 50% */
+.gm-tab-bar {
+  position: relative;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  width: 100%;
+  border-bottom: calc(var(--u-settings) * 0.3) solid rgba(9, 10, 138, 0.45);
+  flex-shrink: 0;
+}
+
+.gm-tab-btn {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: calc(var(--u-settings) * 1.8) calc(var(--u-settings) * 1);
+  font-family: 'Lora', Georgia, serif;
+  font-weight: 700;
+  font-size: calc(var(--u-settings) * 3.4);
+  line-height: 1.25;
+  color: var(--navy-deep);
+  cursor: pointer;
+  text-align: center;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: transform 0.15s ease;
+}
+
+.gm-tab-btn:active {
+  transform: scale(0.97);
+}
+
+.gm-tab-indicator {
+  position: absolute;
+  bottom: calc(var(--u-settings) * -0.3);
+  left: 0;
+  width: 50%;
+  height: calc(100% + calc(var(--u-settings) * 0.3));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.14) 100%);
+  border-bottom: calc(var(--u-settings) * 0.6) solid var(--navy-deep);
+  border-top-left-radius: calc(var(--u-settings) * 1);
+  border-top-right-radius: calc(var(--u-settings) * 1);
+  transition: transform 0.28s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.gm-tab-indicator.right {
+  transform: translateX(100%);
+}
+
+/* 3. Lưới danh sách thẻ game (Cuộn mượt mà như Wallpaper) */
+.gm-games-grid {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Mặc định 2 cột tối ưu trên di động */
+  column-gap: calc(var(--u-settings) * 2.4);
+  row-gap: calc(var(--u-settings) * 2.4);
+  align-content: start;
+  padding-bottom: calc(var(--u-settings) * 3.4);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.gm-games-grid::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 600px) {
+  .gm-games-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.gm-game-card {
+  background-color: var(--card-bg);
+  border-radius: calc(var(--u-settings) * 3.2);
+  padding: calc(var(--u-settings) * 2.2);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u-settings) * 1.8);
+  box-shadow: 0 calc(var(--u-settings) * 0.6) calc(var(--u-settings) * 2) rgba(9, 10, 138, 0.16);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gm-game-card:active {
+  transform: scale(0.97);
+}
+
+.gm-card-thumb {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: calc(var(--u-settings) * 2.2);
+  overflow: hidden;
+  background-color: #E3F4FD;
+  position: relative;
+}
+
+.gm-card-thumb svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.gm-card-footer {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u-settings) * 1.5);
+  width: 100%;
+}
+
+.gm-bookmark-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--u-settings) * 5.5);
+  height: calc(var(--u-settings) * 5.5);
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.gm-bookmark-btn:active {
+  transform: scale(0.84);
+}
+
+.gm-bookmark-btn svg {
+  width: calc(var(--u-settings) * 4.2);
+  height: calc(var(--u-settings) * 4.8);
+  display: block;
+}
+
+.gm-play-pill-btn {
+  flex: 1;
+  min-width: 0;
+  height: calc(var(--u-settings) * 5.5);
+  background-color: var(--btn-blue);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 9999px;
+  font-family: 'Lora', Georgia, serif;
+  font-weight: 700;
+  font-size: calc(var(--u-settings) * 2.7);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 calc(var(--u-settings) * 0.4) calc(var(--u-settings) * 1.2) rgba(9, 10, 138, 0.28);
+  transition: background-color 0.18s ease, transform 0.14s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 calc(var(--u-settings) * 1.5);
+}
+
+.gm-play-pill-btn:active {
+  transform: scale(0.95);
+}
+
+/* Trạng thái trống tab Your game */
+.gm-empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: calc(var(--u-settings) * 4);
+}
+
+.gm-empty-icon-box {
+  width: calc(var(--u-settings) * 12);
+  height: calc(var(--u-settings) * 12);
+  border-radius: calc(var(--u-settings) * 3);
+  background: rgba(255, 255, 255, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: calc(var(--u-settings) * 2.5);
+}
+
+.gm-empty-icon-box svg {
+  width: calc(var(--u-settings) * 5.5);
+  height: calc(var(--u-settings) * 6.5);
+}
+
+.gm-empty-title {
+  font-size: calc(var(--u-settings) * 3.8);
+  font-weight: 700;
+  color: var(--navy-deep);
+  margin: 0 0 calc(var(--u-settings) * 1);
+}
+
+.gm-empty-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: calc(var(--u-settings) * 2.8);
+  color: rgba(9, 10, 138, 0.85);
+  max-width: calc(var(--u-settings) * 60);
+  margin: 0;
+  line-height: 1.45;
+}
+
+/* Drawer menu trượt */
+.gm-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 10, 60, 0.45);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 120;
+}
+
+.gm-drawer-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.gm-drawer-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100dvh;
+  width: min(320px, 80vw);
+  background: var(--bg-gradient);
+  box-shadow: -8px 0 28px rgba(9, 10, 90, 0.28);
+  transform: translateX(100%);
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 130;
+  padding: calc(var(--u-settings) * 3.4);
+  display: flex;
+  flex-direction: column;
+  color: var(--navy-deep);
+}
+
+.gm-drawer-panel.open {
+  transform: translateX(0);
+}
+
+.gm-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: calc(var(--u-settings) * 2.2);
+  border-bottom: calc(var(--u-settings) * 0.3) solid rgba(9, 10, 138, 0.25);
+}
+
+.gm-drawer-title {
+  font-size: calc(var(--u-settings) * 4.2);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.gm-drawer-close-btn {
+  width: calc(var(--u-settings) * 6.5);
+  height: calc(var(--u-settings) * 6.5);
+  border-radius: calc(var(--u-settings) * 1.8);
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--navy-deep);
+}
+
+.gm-drawer-close-btn svg {
+  width: calc(var(--u-settings) * 4.2);
+  height: calc(var(--u-settings) * 4.2);
+}
+
+.gm-drawer-list {
+  list-style: none;
+  margin: calc(var(--u-settings) * 3) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u-settings) * 2);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: calc(var(--u-settings) * 2.9);
+}
+
+.gm-drawer-item-btn {
+  width: 100%;
+  text-align: left;
+  padding: calc(var(--u-settings) * 2) calc(var(--u-settings) * 2.4);
+  border-radius: calc(var(--u-settings) * 1.8);
+  border: none;
+  background: rgba(255, 255, 255, 0.24);
+  color: var(--navy-deep);
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.gm-drawer-item-btn:active {
+  transform: scale(0.97);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.gm-drawer-badge {
+  font-size: calc(var(--u-settings) * 2.4);
+  background: var(--navy-deep);
+  color: #FFFFFF;
+  padding: calc(var(--u-settings) * 0.4) calc(var(--u-settings) * 1.6);
+  border-radius: 9999px;
+}
+
+/* Modal thông báo khi bấm chơi game */
+.gm-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 10, 60, 0.52);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--u-settings) * 3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+  z-index: 140;
+}
+
+.gm-modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.gm-modal-card {
+  width: min(380px, 90vw);
+  background: linear-gradient(180deg, #EBF3FF 0%, #D4E4FF 100%);
+  border: calc(var(--u-settings) * 0.5) solid #3D70B8;
+  border-radius: calc(var(--u-settings) * 3.5);
+  padding: calc(var(--u-settings) * 3.4);
+  box-shadow: 0 14px 36px rgba(9, 10, 138, 0.32);
+  transform: scale(0.92);
+  transition: transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1);
+  text-align: center;
+}
+
+.gm-modal-backdrop.open .gm-modal-card {
+  transform: scale(1);
+}
+
+.gm-modal-thumb-preview {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: calc(var(--u-settings) * 2.2);
+  overflow: hidden;
+  margin-bottom: calc(var(--u-settings) * 2.2);
+  border: calc(var(--u-settings) * 0.3) solid rgba(61, 112, 184, 0.35);
+}
+
+.gm-modal-thumb-preview svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.gm-modal-title {
+  font-family: 'Lora', Georgia, serif;
+  font-size: calc(var(--u-settings) * 4);
+  font-weight: 700;
+  color: var(--navy-deep);
+  margin: 0 0 calc(var(--u-settings) * 1);
+}
+
+.gm-modal-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: calc(var(--u-settings) * 2.8);
+  color: #24387A;
+  margin: 0 0 calc(var(--u-settings) * 3);
+  line-height: 1.4;
+}
+
+.gm-modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--u-settings) * 2);
+}
+
+.gm-modal-btn-secondary {
+  height: calc(var(--u-settings) * 6.5);
+  border-radius: 9999px;
+  border: calc(var(--u-settings) * 0.4) solid var(--btn-blue);
+  background: transparent;
+  color: var(--btn-blue);
+  font-family: 'Lora', Georgia, serif;
+  font-weight: 700;
+  font-size: calc(var(--u-settings) * 2.9);
+  cursor: pointer;
+}
+
+.gm-modal-btn-primary {
+  height: calc(var(--u-settings) * 6.5);
+  border-radius: 9999px;
+  border: none;
+  background: var(--btn-blue);
+  color: #FFFFFF;
+  font-family: 'Lora', Georgia, serif;
+  font-weight: 700;
+  font-size: calc(var(--u-settings) * 2.9);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(36, 44, 163, 0.32);
+}
+
+/* Toast thông báo nhẹ */
+.gm-toast-msg {
+  position: fixed;
+  bottom: calc(var(--u-settings) * 3.5);
+  left: 50%;
+  transform: translateX(-50%) translateY(calc(var(--u-settings) * 3));
+  background: var(--navy-deep);
+  color: #FFFFFF;
+  font-family: 'Inter', sans-serif;
+  font-size: calc(var(--u-settings) * 2.8);
+  font-weight: 500;
+  padding: calc(var(--u-settings) * 1.6) calc(var(--u-settings) * 3.2);
+  border-radius: 9999px;
+  box-shadow: 0 8px 24px rgba(9, 10, 138, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  z-index: 150;
+  white-space: nowrap;
+}
+
+.gm-toast-msg.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+

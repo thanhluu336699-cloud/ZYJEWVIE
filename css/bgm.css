@@ -1,0 +1,414 @@
+/* ==========================================================================
+   BGM SCREEN CSS (MÀN HÌNH NHẠC NỀN - OVERLAY)
+   ========================================================================== */
+
+.bgm-screen {
+  --navy-dark: #0c1446;
+  --card-glass: rgba(255, 255, 255, 0.24);
+  --search-glass: rgba(88, 118, 212, 0.30);
+  --btn-indigo: #4644b8;
+  --btn-indigo-active: #2c2a8a;
+  --toggle-track-on: rgba(182, 204, 248, 0.65);
+  --toggle-knob-on: #5079c6;
+  --toggle-track-off: rgba(130, 150, 200, 0.45);
+  --toggle-knob-off: #7c91c2;
+
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  z-index: 110; /* Cao hơn settingsScreen (100) để đè lên Settings */
+  background: var(--bg-gradient);
+  font-family: 'Lora', Georgia, serif;
+
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--u-settings) * 3.4) calc(var(--u-settings) * 3.8);
+  padding-bottom: max(calc(var(--u-settings) * 3.2), env(safe-area-inset-bottom));
+  padding-top: max(calc(var(--u-settings) * 3.6), env(safe-area-inset-top));
+  gap: calc(var(--u-settings) * 2.6);
+  overflow: hidden;
+
+  /* Hiệu ứng trượt mở/đóng giống Settings */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(6%);
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+}
+
+.bgm-screen.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+.bgm-serif-heading {
+  font-family: 'Merriweather', 'Lora', serif;
+  color: var(--navy-dark);
+  letter-spacing: calc(var(--u-settings) * -0.01);
+}
+
+/* Thanh Header trên cùng */
+.bgm-top-header {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u-settings) * 2.2);
+  padding: calc(var(--u-settings) * 0.6) calc(var(--u-settings) * 0.4);
+  flex-shrink: 0;
+}
+
+.bgm-back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--u-settings) * 7.2);
+  height: calc(var(--u-settings) * 7.2);
+  border-radius: calc(var(--u-settings) * 2.2);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--navy-dark);
+  transition: transform 0.15s ease, background-color 0.2s ease;
+  padding: 0;
+}
+
+.bgm-back-btn:active {
+  transform: scale(0.88);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.bgm-back-btn svg {
+  width: calc(var(--u-settings) * 5);
+  height: calc(var(--u-settings) * 5);
+}
+
+.bgm-header-title {
+  font-size: calc(var(--u-settings) * 4.5);
+  font-weight: 900;
+  margin: 0;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Thẻ Bật / Tắt */
+.bgm-toggle-card {
+  background: var(--card-glass);
+  border-radius: calc(var(--u-settings) * 3.8);
+  padding: calc(var(--u-settings) * 2.6) calc(var(--u-settings) * 4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  backdrop-filter: blur(calc(var(--u-settings) * 1.1));
+  -webkit-backdrop-filter: blur(calc(var(--u-settings) * 1.1));
+  box-shadow: 0 calc(var(--u-settings) * 0.7) calc(var(--u-settings) * 2.6) rgba(20, 40, 100, 0.05);
+}
+
+.bgm-toggle-label {
+  font-size: calc(var(--u-settings) * 4);
+  font-weight: 900;
+  color: var(--navy-dark);
+  line-height: 1.2;
+  transition: opacity 0.25s ease;
+}
+
+/* Nút gạt Toggle Switch */
+.bgm-switch-btn {
+  --sw-w: calc(var(--u-settings) * 12.8);
+  --sw-h: calc(var(--u-settings) * 6.8);
+  --sw-pad: calc(var(--u-settings) * 0.55);
+  --knob-size: calc(var(--u-settings) * 5.7);
+  position: relative;
+  width: var(--sw-w);
+  height: var(--sw-h);
+  border-radius: 999px;
+  background-color: var(--toggle-track-on);
+  border: none;
+  cursor: pointer;
+  padding: var(--sw-pad);
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.bgm-switch-btn[aria-checked="false"] {
+  background-color: var(--toggle-track-off);
+}
+
+.bgm-switch-knob {
+  width: var(--knob-size);
+  height: var(--knob-size);
+  border-radius: 50%;
+  background-color: var(--toggle-knob-on);
+  box-shadow: 0 calc(var(--u-settings) * 0.35) calc(var(--u-settings) * 1) rgba(12, 20, 70, 0.22);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease;
+  transform: translateX(calc(var(--sw-w) - var(--knob-size) - var(--sw-pad) * 2));
+}
+
+.bgm-switch-btn[aria-checked="false"] .bgm-switch-knob {
+  transform: translateX(0);
+  background-color: var(--toggle-knob-off);
+}
+
+/* Khung danh sách nhạc nền */
+.bgm-music-panel {
+  flex: 1;
+  min-height: 0;
+  background: var(--card-glass);
+  border-radius: calc(var(--u-settings) * 4.6);
+  padding: calc(var(--u-settings) * 3.2) calc(var(--u-settings) * 3.4) 0 calc(var(--u-settings) * 3.4);
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(calc(var(--u-settings) * 1.1));
+  -webkit-backdrop-filter: blur(calc(var(--u-settings) * 1.1));
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.bgm-music-panel.is-muted {
+  opacity: 0.62;
+}
+
+.bgm-section-title {
+  font-size: calc(var(--u-settings) * 3.3);
+  font-weight: 900;
+  margin: 0 0 calc(var(--u-settings) * 2.2) calc(var(--u-settings) * 0.4);
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+/* Thanh tìm kiếm */
+.bgm-search-box {
+  width: 100%;
+  height: calc(var(--u-settings) * 7.6);
+  background: var(--search-glass);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  padding: 0 calc(var(--u-settings) * 2.8);
+  gap: calc(var(--u-settings) * 2);
+  margin-bottom: calc(var(--u-settings) * 2.4);
+  flex-shrink: 0;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bgm-search-box:focus-within {
+  background: rgba(88, 118, 212, 0.42);
+  box-shadow: 0 0 0 calc(var(--u-settings) * 0.35) rgba(12, 20, 70, 0.25);
+}
+
+.bgm-search-box svg {
+  width: calc(var(--u-settings) * 3.6);
+  height: calc(var(--u-settings) * 3.6);
+  flex-shrink: 0;
+}
+
+.bgm-search-input {
+  flex: 1;
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--navy-dark);
+  font-family: 'Lora', serif;
+  font-size: calc(var(--u-settings) * 2.95);
+  font-weight: 600;
+  user-select: text;
+}
+
+.bgm-search-input::placeholder {
+  color: rgba(12, 20, 70, 0.45);
+  font-weight: 500;
+}
+
+.bgm-clear-search-btn {
+  background: rgba(12, 20, 70, 0.15);
+  border: none;
+  color: var(--navy-dark);
+  width: calc(var(--u-settings) * 3.8);
+  height: calc(var(--u-settings) * 3.8);
+  border-radius: 50%;
+  font-size: calc(var(--u-settings) * 2.2);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.bgm-clear-search-btn.visible {
+  display: flex;
+}
+
+/* Danh sách bài hát */
+.bgm-song-list {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u-settings) * 2.2);
+  padding-bottom: calc(var(--u-settings) * 3.4);
+  padding-right: calc(var(--u-settings) * 0.4);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.bgm-song-list::-webkit-scrollbar {
+  display: none;
+}
+
+.bgm-song-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--u-settings) * 2.4);
+  padding: calc(var(--u-settings) * 1) calc(var(--u-settings) * 1.2);
+  border-radius: calc(var(--u-settings) * 2.6);
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.bgm-song-item.is-playing {
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 calc(var(--u-settings) * 0.4) calc(var(--u-settings) * 1.8) rgba(70, 68, 184, 0.12);
+}
+
+.bgm-album-cover {
+  width: calc(var(--u-settings) * 9.2);
+  height: calc(var(--u-settings) * 9.2);
+  border-radius: calc(var(--u-settings) * 1.7);
+  flex-shrink: 0;
+  background: linear-gradient(145deg, #ead8b1 0%, #cfb682 100%);
+  border: calc(var(--u-settings) * 0.36) solid #2d261e;
+  box-shadow: inset 0 0 0 calc(var(--u-settings) * 0.28) rgba(255, 248, 230, 0.6), 0 calc(var(--u-settings) * 0.4) calc(var(--u-settings) * 0.9) rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.bgm-song-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(var(--u-settings) * 0.4);
+}
+
+.bgm-song-title {
+  color: #ffffff;
+  font-family: 'Lora', serif;
+  font-size: calc(var(--u-settings) * 3.15);
+  font-weight: 700;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 calc(var(--u-settings) * 0.2) calc(var(--u-settings) * 0.4) rgba(25, 45, 110, 0.18);
+}
+
+.bgm-song-meta {
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'Lora', serif;
+  font-size: calc(var(--u-settings) * 2.45);
+  font-weight: 500;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u-settings) * 1.2);
+}
+
+.bgm-play-btn {
+  width: calc(var(--u-settings) * 7.2);
+  height: calc(var(--u-settings) * 7.2);
+  border-radius: 50%;
+  background-color: var(--btn-indigo);
+  border: none;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 calc(var(--u-settings) * 0.5) calc(var(--u-settings) * 1.4) rgba(30, 28, 110, 0.25);
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease;
+}
+
+.bgm-play-btn svg {
+  width: calc(var(--u-settings) * 2.8);
+  height: calc(var(--u-settings) * 2.8);
+}
+
+.bgm-play-btn:hover {
+  background-color: #3b39a3;
+}
+
+.bgm-play-btn:active {
+  transform: scale(0.86);
+}
+
+.bgm-play-btn.active {
+  background-color: var(--btn-indigo-active);
+  box-shadow: 0 0 0 calc(var(--u-settings) * 0.55) rgba(255, 255, 255, 0.45);
+}
+
+/* Sóng nhạc */
+.bgm-equalizer {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: calc(var(--u-settings) * 0.4);
+  height: calc(var(--u-settings) * 2);
+  margin-left: calc(var(--u-settings) * 0.6);
+}
+
+.bgm-equalizer span {
+  width: calc(var(--u-settings) * 0.4);
+  background-color: #ffffff;
+  border-radius: calc(var(--u-settings) * 0.2);
+  animation: bgmEqBounce 0.8s infinite ease-in-out;
+}
+
+.bgm-equalizer span:nth-child(2) { animation-delay: 0.2s; }
+.bgm-equalizer span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bgmEqBounce {
+  0%, 100% { height: calc(var(--u-settings) * 0.6); }
+  50% { height: calc(var(--u-settings) * 2); }
+}
+
+/* Toast thông báo */
+.bgm-game-toast {
+  position: absolute;
+  bottom: calc(var(--u-settings) * 4);
+  left: 50%;
+  transform: translateX(-50%) translateY(calc(var(--u-settings) * 3.5));
+  background: rgba(12, 20, 70, 0.9);
+  color: #ffffff;
+  padding: calc(var(--u-settings) * 1.8) calc(var(--u-settings) * 3.4);
+  border-radius: 999px;
+  font-size: calc(var(--u-settings) * 2.6);
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 50;
+  box-shadow: 0 calc(var(--u-settings) * 1.4) calc(var(--u-settings) * 3.6) rgba(0, 0, 0, 0.25);
+}
+
+.bgm-game-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.bgm-empty-state {
+  text-align: center;
+  color: var(--navy-dark);
+  opacity: 0.7;
+  padding: calc(var(--u-settings) * 4.5) calc(var(--u-settings) * 2.4);
+  font-size: calc(var(--u-settings) * 2.9);
+  font-weight: 600;
+}
+

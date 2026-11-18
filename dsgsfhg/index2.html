@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Chọn Ca Sĩ Biểu Diễn</title>
+    <!-- Tải Google Fonts: Merriweather (font có chân cho tiêu đề) & Be Vietnam Pro (font không chân sắc nét cho tiếng Việt) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@500;600;700&family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Reset & Thiết lập biến màu chuẩn theo thiết kế */
+        :root {
+            --bg-top: #5383eb;
+            --bg-bottom: #b4cafb;
+            --text-navy: #07177a;
+            --card-bg: #3c74b4;
+            --card-bg-hover: #33679c;
+            --pill-bg: #24478f;
+            --selected-glow: #ffd166;
+            --plus-color: #1e2436;
+            
+            /* Khoảng cách co dãn thông minh theo màn hình (clamp) */
+            --pad-x: clamp(14px, 4.5vw, 28px);
+            --pad-y: clamp(16px, 3dvh, 32px);
+            --grid-gap: clamp(10px, 3.2vw, 20px);
+            --card-radius: clamp(12px, 3.5vw, 18px);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        html, body {
+            width: 100vw;
+            height: 100dvh;
+            overflow: hidden;
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+            color: var(--text-navy);
+        }
+
+        /* Khung bao toàn màn hình hỗ trợ tai thỏ / thanh điều hướng (safe-area-inset) */
+        .game-screen {
+            width: 100%;
+            height: 100dvh;
+            max-width: 540px; /* Giữ tỷ lệ chuẩn mobile nếu mở trên tablet/PC */
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding-top: calc(var(--pad-y) + env(safe-area-inset-top, 0px));
+            padding-bottom: calc(var(--pad-y) + env(safe-area-inset-bottom, 0px));
+            padding-left: calc(var(--pad-x) + env(safe-area-inset-left, 0px));
+            padding-right: calc(var(--pad-x) + env(safe-area-inset-right, 0px));
+        }
+
+        /* ================= HEADER ================= */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: clamp(8px, 2.5vw, 14px);
+            flex-shrink: 0;
+            padding-bottom: clamp(12px, 2.2dvh, 22px);
+        }
+
+        .btn-back {
+            background: transparent;
+            border: none;
+            color: var(--text-navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: clamp(34px, 9vw, 44px);
+            height: clamp(34px, 9vw, 44px);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.15s ease, background-color 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .btn-back:active {
+            transform: scale(0.88);
+            background-color: rgba(11, 25, 87, 0.1);
+        }
+
+        .btn-back svg {
+            width: clamp(22px, 6vw, 28px);
+            height: clamp(22px, 6vw, 28px);
+            stroke-width: 3.5;
+        }
+
+        .header-title {
+            font-family: 'Merriweather', serif;
+            font-weight: 900;
+            font-size: clamp(1.15rem, 5.2vw, 1.65rem);
+            color: var(--text-navy);
+            letter-spacing: -0.02em;
+            line-height: 1.25;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ================= LƯỚI CHỌN 3 CỘT ================= */
+        .grid-wrapper {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 4px 2px 12px 2px;
+            /* Ẩn thanh cuộn nhưng vẫn cho phép cuộn mượt nếu thêm nhiều thẻ */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .grid-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .singer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--grid-gap);
+            width: 100%;
+            align-content: start;
+        }
+
+        /* Thẻ ca sĩ */
+        .singer-card {
+            background-color: var(--card-bg);
+            border-radius: var(--card-radius);
+            padding: clamp(7px, 2vw, 11px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            aspect-ratio: 0.78 / 1; /* Tỷ lệ khung thẻ chuẩn như ảnh mẫu */
+            cursor: pointer;
+            position: relative;
+            border: 2.5px solid transparent;
+            box-shadow: 0 4px 10px rgba(11, 25, 87, 0.12);
+            transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                        border-color 0.2s ease, 
+                        box-shadow 0.2s ease,
+                        background-color 0.2s ease;
+        }
+
+        .singer-card:active {
+            transform: scale(0.95);
+        }
+
+        /* Hiệu ứng khi thẻ được chọn */
+        .singer-card.selected {
+            border-color: var(--selected-glow);
+            background-color: #2f659c;
+            box-shadow: 0 0 0 3px rgba(255, 209, 102, 0.35), 0 8px 18px rgba(11, 25, 87, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Huy hiệu tick nhỏ khi được chọn */
+        .selected-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: clamp(20px, 5.5vw, 24px);
+            height: clamp(20px, 5.5vw, 24px);
+            background-color: var(--selected-glow);
+            color: var(--text-navy);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 2;
+        }
+
+        .singer-card.selected .selected-badge {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Khung ảnh đại diện bên trong thẻ */
+        .avatar-frame {
+            width: 100%;
+            aspect-ratio: 1.05 / 1;
+            border-radius: clamp(8px, 2.2vw, 12px);
+            overflow: hidden;
+            background: linear-gradient(180deg, #dff3ff 0%, #ffffff 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .avatar-frame img,
+        .avatar-frame svg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Nhãn viên thuốc (pill) chứa tên ca sĩ - Chỉ hiển thị, khóa tương tác sửa */
+        .name-pill {
+            width: 100%;
+            background-color: var(--pill-bg);
+            color: #ffffff;
+            border-radius: 999px;
+            padding: clamp(4px, 1.1dvh, 6px) clamp(6px, 1.8vw, 10px);
+            margin-top: clamp(6px, 1.4dvh, 9px);
+            text-align: center;
+            font-size: clamp(0.68rem, 2.8vw, 0.85rem);
+            font-weight: 600;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            pointer-events: none; /* Khóa click trực tiếp vào nhãn tên */
+        }
+
+        /* Thẻ dấu '+' thêm ca sĩ */
+        .add-card {
+            justify-content: center;
+            align-items: center;
+            background-color: var(--card-bg);
+        }
+
+        .add-card:hover {
+            background-color: var(--card-bg-hover);
+        }
+
+        .plus-icon {
+            width: clamp(28px, 8vw, 38px);
+            height: clamp(28px, 8vw, 38px);
+            color: var(--plus-color);
+            transition: transform 0.2s ease;
+        }
+
+        .add-card:active .plus-icon {
+            transform: rotate(90deg) scale(0.9);
+        }
+
+        /* ================= FOOTER ================= */
+        .footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: clamp(10px, 2dvh, 18px);
+            flex-shrink: 0;
+        }
+
+        .selection-hint {
+            font-size: clamp(0.75rem, 3vw, 0.88rem);
+            color: rgba(11, 25, 87, 0.78);
+            font-weight: 600;
+        }
+
+        .btn-proceed {
+            background: transparent;
+            border: none;
+            color: var(--text-navy);
+            font-family: 'Merriweather', serif;
+            font-weight: 900;
+            font-size: clamp(1.05rem, 4.5vw, 1.35rem);
+            display: inline-flex;
+            align-items: center;
+            gap: clamp(6px, 2vw, 10px);
+            padding: clamp(8px, 1.8dvh, 12px) clamp(10px, 2.5vw, 16px);
+            margin-right: calc(clamp(10px, 2.5vw, 16px) * -1);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.15s ease, background-color 0.2s ease, opacity 0.2s ease;
+        }
+
+        .btn-proceed:active {
+            transform: scale(0.94);
+            background-color: rgba(11, 25, 87, 0.1);
+        }
+
+        .btn-proceed svg {
+            width: clamp(20px, 5vw, 24px);
+            height: clamp(20px, 5vw, 24px);
+            stroke-width: 2.8;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-proceed:hover svg {
+            transform: translateX(4px);
+        }
+
+        /* Toast thông báo nhỏ gọn thay thế alert() */
+        .toast {
+            position: fixed;
+            top: calc(16px + env(safe-area-inset-top, 0px));
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: var(--text-navy);
+            color: #ffffff;
+            padding: 10px 18px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(7, 23, 122, 0.3);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.25s ease;
+            z-index: 60;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Tinh chỉnh riêng cho các màn hình siêu nhỏ (chiều cao < 600px) */
+        @media (max-height: 600px) {
+            :root {
+                --pad-y: 10px;
+                --grid-gap: 8px;
+            }
+            .header {
+                padding-bottom: 8px;
+            }
+            .singer-card {
+                aspect-ratio: 0.85 / 1;
+                padding: 5px;
+            }
+            .name-pill {
+                margin-top: 4px;
+                padding: 3px 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="game-screen">
+        <!-- Phần Header trên cùng -->
+        <header class="header">
+            <button type="button" class="btn-back" id="btnBack" aria-label="Quay lại">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <h1 class="header-title">Chọn ca sĩ biểu diễn</h1>
+        </header>
+
+        <!-- Phần Lưới 3 cột danh sách ca sĩ -->
+        <section class="grid-wrapper">
+            <div class="singer-grid" id="singerGrid">
+                <!-- Các thẻ ca sĩ và thẻ dấu '+' sẽ được render tự động qua JS -->
+            </div>
+        </section>
+
+        <!-- Phần Footer dưới cùng -->
+        <footer class="footer">
+            <span class="selection-hint" id="selectionHint">Chạm thẻ để chọn</span>
+            <button type="button" class="btn-proceed" id="btnProceed">
+                <span>Vào biểu diễn</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="13 6 19 12 13 18"></polyline>
+                </svg>
+            </button>
+        </footer>
+    </main>
+
+    <!-- Thông báo Toast -->
+    <div class="toast" id="toastMessage"></div>
+
+    <script>
+        /* =====================================================================
+         * KHU VỰC CẤU HÌNH DÀNH CHO ADMIN (CHỈ SỬA TÊN & ẢNH TẠI ĐÂY)
+         * - id: Mã định danh duy nhất của ca sĩ (không trùng nhau)
+         * - name: Tên ca sĩ hiển thị trên thẻ (Player không thể tự sửa)
+         * - image: Đường dẫn URL ảnh đại diện (để null sẽ hiện ảnh mặc định)
+         * ===================================================================== */
+        const SINGERS_CONFIG = [
+            { id: 1, name: 'tên ca sĩ', image: null },
+            { id: 2, name: 'tên ca sĩ', image: null },
+            { id: 3, name: 'tên ca sĩ', image: null },
+            { id: 4, name: 'tên ca sĩ', image: null },
+            { id: 5, name: 'tên ca sĩ', image: null },
+            { id: 6, name: 'tên ca sĩ', image: null }
+        ];
+
+        // SVG minh họa phong cảnh đồi xanh & mây trắng giống hệt placeholder trong ảnh mẫu
+        const DEFAULT_PLACEHOLDER_SVG = `
+            <svg viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                <defs>
+                    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#d2ecff"/>
+                        <stop offset="75%" stop-color="#f4fbff"/>
+                        <stop offset="100%" stop-color="#ffffff"/>
+                    </linearGradient>
+                </defs>
+                <rect width="200" height="180" fill="url(#skyGrad)"/>
+                <!-- Đám mây trắng -->
+                <path d="M68 72h64c9.5 0 17-7.2 17-16.2 0-8.2-6.2-15-14.3-16-2.5-11.2-12.5-19.8-24.7-19.8-10.6 0-19.6 6.5-23.3 15.8-2.2-.8-4.6-1.3-7.2-1.3-10.8 0-19.5 8.5-19.5 19 0 10.3 8.1 18.5 18 18.5z" fill="#ffffff"/>
+                <!-- Đồi cỏ xanh nhạt phía sau -->
+                <path d="M0 128 Q 55 112, 125 136 T 200 132 L 200 180 L 0 180 Z" fill="#c5e17a"/>
+                <!-- Đồi cỏ xanh đậm phía trước -->
+                <path d="M0 146 Q 80 124, 155 144 T 200 140 L 200 180 L 0 180 Z" fill="#8cb81e"/>
+            </svg>
+        `;
+
+        let selectedSingerId = SINGERS_CONFIG.length > 0 ? SINGERS_CONFIG[0].id : null;
+        let toastTimer = null;
+
+        const gridEl = document.getElementById('singerGrid');
+        const selectionHintEl = document.getElementById('selectionHint');
+        const toastEl = document.getElementById('toastMessage');
+
+        // Hiển thị thông báo nhanh
+        function showToast(msg) {
+            toastEl.textContent = msg;
+            toastEl.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toastEl.classList.remove('show');
+            }, 2200);
+        }
+
+        // Cập nhật dòng trạng thái ở footer
+        function updateSelectionHint() {
+            const selected = SINGERS_CONFIG.find(s => s.id === selectedSingerId);
+            if (selected) {
+                selectionHintEl.textContent = `Đã chọn: ${selected.name}`;
+            } else {
+                selectionHintEl.textContent = 'Chạm thẻ để chọn';
+            }
+        }
+
+        // Render toàn bộ lưới 3 cột từ SINGERS_CONFIG
+        function renderGrid() {
+            gridEl.innerHTML = '';
+
+            SINGERS_CONFIG.forEach(singer => {
+                const isSelected = singer.id === selectedSingerId;
+                const card = document.createElement('div');
+                card.className = `singer-card ${isSelected ? 'selected' : ''}`;
+                
+                // Nội dung khung ảnh (URL ảnh do admin cấu hình hoặc SVG mặc định)
+                const avatarContent = singer.image 
+                    ? `<img src="${singer.image}" alt="${singer.name}">`
+                    : DEFAULT_PLACEHOLDER_SVG;
+
+                card.innerHTML = `
+                    <div class="selected-badge">✓</div>
+                    <div class="avatar-frame">
+                        ${avatarContent}
+                    </div>
+                    <div class="name-pill">${singer.name}</div>
+                `;
+
+                // Player chỉ có quyền chạm để chọn thẻ ca sĩ
+                card.addEventListener('click', () => {
+                    selectedSingerId = singer.id;
+                    renderGrid();
+                    updateSelectionHint();
+                });
+
+                gridEl.appendChild(card);
+            });
+
+            // Thẻ dấu '+' ở cuối lưới (ô mở khóa thêm ca sĩ)
+            const addCard = document.createElement('div');
+            addCard.className = 'singer-card add-card';
+            addCard.setAttribute('role', 'button');
+            addCard.setAttribute('aria-label', 'Mở khóa thêm ca sĩ');
+            addCard.innerHTML = `
+                <svg class="plus-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+            `;
+
+            addCard.addEventListener('click', () => {
+                showToast('Chức năng mở khóa thêm ca sĩ!');
+            });
+
+            gridEl.appendChild(addCard);
+        }
+
+        // Nút Quay lại '<'
+        document.getElementById('btnBack').addEventListener('click', () => {
+            showToast('Quay lại màn hình trước');
+        });
+
+        // Nút 'Vào biểu diễn →'
+        document.getElementById('btnProceed').addEventListener('click', () => {
+            const selected = SINGERS_CONFIG.find(s => s.id === selectedSingerId);
+            if (!selected) {
+                showToast('Vui lòng chọn một ca sĩ trước!');
+                return;
+            }
+            showToast(`Bắt đầu biểu diễn với "${selected.name}"!`);
+        });
+
+        // Khởi tạo giao diện ban đầu
+        renderGrid();
+        updateSelectionHint();
+    </script>
+</body>
+</html>

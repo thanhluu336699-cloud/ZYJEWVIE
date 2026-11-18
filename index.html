@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Idol Theater Game UI</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Lora:wght@600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS dùng chung (Bắt buộc nạp đầu tiên) -->
+  <link rel="stylesheet" href="css/common.css" />
+  
+  <!-- CSS riêng từng màn hình -->
+  <link rel="stylesheet" href="css/home.css" />
+    <!-- Font & CSS cho màn hình Game -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/game.css" />
+        
+    <!-- Font & CSS cho màn hình Stage -->
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/stage.css" />
+
+
+
+  <link rel="stylesheet" href="css/settings.css" />
+    <link rel="stylesheet" href="css/wallpaper.css" />
+    <!-- Font cho màn hình Nhạc nền -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/bgm.css" />
+
+</head>
+<body>
+    <!-- ==================== MÀN HÌNH 1: HOME (MÀN HÌNH CHÍNH) ==================== -->
+    <div class="app-shell" id="mainScreen">
+        <!-- HEADER -->
+        <header class="top-header">
+        <div class="player-info">
+            <div class="avatar-box">
+            <img id="playerAvatar" src="https://placehold.co/120x120/2f3f73/ffffff?text=AVT" alt="Avatar" />
+            </div>
+            <div class="player-meta">
+            <div class="player-name" id="playerName">ZYJEWVIE</div>
+            <div class="player-level" id="playerLevel">Lv.1</div>
+            <div class="exp-row">
+                <div class="exp-bar">
+                <div class="exp-fill" id="expFill" style="width: 0%;"></div>
+                </div>
+                <span class="exp-text" id="expText">0 / 1000</span>
+            </div>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <div class="currency-pill">
+            <span class="coin-icon">$</span>
+            <span class="currency-val" id="coinVal">1000B</span>
+            <button class="plus-btn" type="button" aria-label="Add Coins">+</button>
+            </div>
+
+            <div class="currency-pill">
+            <span class="gem-icon"></span>
+            <span class="currency-val" id="gemVal">9999</span>
+            <button class="plus-btn" type="button" aria-label="Add Gems">+</button>
+            </div>
+
+            <button class="settings-btn" id="openSettingsBtn" type="button" aria-label="Settings">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1 1 15.6 12 3.6 3.6 0 0 1 12 15.6z"/>
+            </svg>
+            </button>
+        </div>
+        </header>
+
+        <!-- KHU VỰC NHÂN VẬT CHÍNH -->
+        <main class="center-stage">
+        <img
+            id="mainCharacter"
+            class="character-img"
+            src="assets/images/idol1.png"
+            alt="Idol Character"
+        />
+        </main>
+
+        <!-- HAI NÚT CHỨC NĂNG LỚN -->
+        <section class="action-row">
+        <button class="main-action-btn" type="button" data-mode="STAGE">
+            <span>STAGE</span>
+        </button>
+        <button class="main-action-btn" type="button" data-mode="GAME">
+            <span>GAME</span>
+        </button>
+        </section>
+
+        <!-- THANH ĐIỀU HƯỚNG 5 TAB -->
+        <nav class="bottom-nav">
+        <button class="nav-item active" type="button" data-tab="home">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <span class="nav-label">Home</span>
+        </button>
+
+        <button class="nav-item" type="button" data-tab="message">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            <span class="nav-label">Message</span>
+        </button>
+
+        <button class="nav-item" type="button" data-tab="ranking">
+            <svg viewBox="0 0 24 24"><path d="M15 11V5l-3-3-3 3v2H3v14h18V11h-6zm-8 8H5v-2h2v2zm0-4H5v-2h2v2zm0-4H5V9h2v2zm6 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V9h2v2zm0-4h-2V5h2v2zm6 12h-2v-2h2v2zm0-4h-2v-2h2v2z"/></svg>
+            <span class="nav-label">Ranking</span>
+        </button>
+
+        <button class="nav-item" type="button" data-tab="benefits">
+            <svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>
+            <span class="nav-label">Benefits</span>
+        </button>
+
+        <button class="nav-item" type="button" data-tab="shop">
+            <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            <span class="nav-label">Shop</span>
+        </button>
+        </nav>
+    </div>
+
+    <!-- ==================== MÀN HÌNH 2: SETTINGS (OVERLAY) ==================== -->
+    <div class="settings-screen" id="settingsScreen">
+        <header class="settings-header">
+        <button class="btn-back" id="btnBack" type="button" aria-label="Quay lại">&lt;</button>
+        <h1 class="header-title">Settings</h1>
+        </header>
+
+        <div class="dashed-divider"></div>
+
+        <main class="settings-content">
+        <div class="settings-groups-wrap">
+            <section class="settings-group">
+            <div class="group-banner">GIAO DIỆN</div>
+            <div class="setting-item" data-action="wallpaper">
+                <span class="item-label">Hình nền</span>
+                <span class="item-arrow">&gt;</span>
+            </div>
+            <div class="setting-item" data-action="theme-mode">
+                <span class="item-label">Chế độ</span>
+                <span class="item-arrow">&gt;</span>
+            </div>
+            </section>
+
+            <section class="settings-group">
+            <div class="group-banner">ÂM LƯỢNG</div>
+            <div class="setting-item" data-action="bgm">
+                <span class="item-label">Nhạc nền</span>
+                <span class="item-arrow">&gt;</span>
+            </div>
+            <div class="setting-item" data-action="sfx">
+                <span class="item-label">Hiệu ứng</span>
+                <span class="item-arrow">&gt;</span>
+            </div>
+            <div class="setting-item" data-action="notification-sound">
+                <span class="item-label">Thông báo</span>
+                <span class="item-arrow">&gt;</span>
+            </div>
+            </section>
+
+            <section class="settings-group">
+            <div class="group-banner">HỖ TRỢ</div>
+            <div class="setting-item" data-action="guide">
+                <span class="item-label">Hướng dẫn</span>
+                <span class="item-arrow">&gt;</span>
+            </div>
+            <div class="setting-item" data-action="policy">
+                <span class="item-label">Chính sách</span>
+                <span class="item-arrow">&gt;</span>
+            </div>
+            <div class="setting-item" data-action="terms">
+                <span class="item-label">Điều khoản sử dụng</span>
+                <span class="item-arrow">&gt;</span>
+            </div>
+            </section>
+        </div>
+
+        <section class="account-actions">
+            <button class="danger-item" type="button" data-action="logout">Đăng xuất</button>
+            <button class="danger-item" type="button" data-action="delete-account">Xóa tài khoản</button>
+        </section>
+        </main>
+
+        <footer class="settings-footer">
+        <div class="brand-watermark">ZYJEWVIE</div>
+        </footer>
+    </div>
+
+    <!-- ==================== MÀN HÌNH 3: HÌNH NỀN & NHÂN VẬT (OVERLAY) ==================== -->
+    <div class="wallpaper-screen" id="wallpaperScreen">
+        <!-- Thanh tiêu đề trên cùng -->
+        <header class="wp-top-header">
+        <button class="wp-btn-back" id="wpBtnBack" type="button" aria-label="Quay lại">
+            <svg viewBox="0 0 24 24">
+            <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+        </button>
+        <h1 class="wp-header-title">Hình nền</h1>
+        </header>
+
+        <!-- Khung Màu nền -->
+        <section class="bg-section">
+        <h2 class="section-label">Màu nền</h2>
+        <div class="bg-scroll-list" id="bgListContainer"></div>
+        </section>
+
+        <!-- Khung Nhân vật -->
+        <section class="char-section">
+        <h2 class="section-label">Nhân vật</h2>
+        <div class="char-grid-scroll" id="charGridContainer"></div>
+        </section>
+    </div>
+
+    <!-- ==================== MÀN HÌNH 4: NHẠC NỀN (OVERLAY) ==================== -->
+    <div class="bgm-screen" id="bgmScreen" role="region" aria-label="Cài đặt nhạc nền">
+        <!-- 1. Thanh tiêu đề & nút quay lại -->
+        <header class="bgm-top-header">
+        <button id="bgmBackBtn" class="bgm-back-btn" type="button" aria-label="Quay lại">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0c1446" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 4 7 12 16 20"></polyline>
+            </svg>
+        </button>
+        <h1 class="bgm-serif-heading bgm-header-title">Background music</h1>
+        </header>
+
+        <!-- 2. Thẻ Bật / Tắt tổng -->
+        <section class="bgm-toggle-card">
+        <span id="bgmToggleStatusText" class="bgm-serif-heading bgm-toggle-label">Bật</span>
+        <button id="bgmMasterSwitch" class="bgm-switch-btn" type="button" role="switch" aria-checked="true" aria-label="Bật hoặc tắt nhạc nền">
+            <span class="bgm-switch-knob"></span>
+        </button>
+        </section>
+
+        <!-- 3. Bảng danh sách Nhạc nền -->
+        <section id="bgmMusicPanel" class="bgm-music-panel">
+        <h2 class="bgm-serif-heading bgm-section-title">Nhạc nền:</h2>
+
+        <!-- Thanh tìm kiếm -->
+        <div class="bgm-search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0c1446" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7.5"></circle>
+            <line x1="20.5" y1="20.5" x2="16.35" y2="16.35"></line>
+            </svg>
+            <input
+            id="bgmSearchInput"
+            class="bgm-search-input"
+            type="text"
+            placeholder="Tìm kiếm bài hát..."
+            autocomplete="off"
+            aria-label="Tìm kiếm nhạc nền"
+            />
+            <button id="bgmClearSearchBtn" class="bgm-clear-search-btn" type="button" aria-label="Xóa tìm kiếm">✕</button>
+        </div>
+
+        <!-- Danh sách các bài hát có thể cuộn -->
+        <div id="bgmSongListContainer" class="bgm-song-list" role="list"></div>
+        </section>
+
+        <!-- Toast phản hồi trong game -->
+        <div id="bgmGameToast" class="bgm-game-toast" role="status" aria-live="polite"></div>
+    </div>
+
+    <!-- ==================== MÀN HÌNH 5: GAME (OVERLAY) ==================== -->
+    <div class="game-screen" id="gameScreen" role="region" aria-label="Danh sách trò chơi">
+        <!-- 1. Thanh Header trên cùng -->
+        <header class="gm-top-header">
+            <button type="button" id="gmBtnBack" class="gm-icon-action-btn" aria-label="Quay lại" style="margin-left: calc(-0.4 * var(--ui));">
+                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M25 6L9 18L25 30" stroke="#090A8A" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <button type="button" id="gmBtnHamburger" class="gm-icon-action-btn" aria-label="Mở menu" style="margin-right: calc(-0.4 * var(--ui));">
+                <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 9.5H30" stroke="#090A8A" stroke-width="4.4" stroke-linecap="round"/>
+                    <path d="M6 18H30" stroke="#090A8A" stroke-width="4.4" stroke-linecap="round"/>
+                    <path d="M6 26.5H30" stroke="#090A8A" stroke-width="4.4" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </header>
+
+        <!-- 2. Thanh chuyển Tab "Game" / "Your game" -->
+        <nav class="gm-tab-bar" role="tablist" aria-label="Danh mục trò chơi">
+            <div id="gmTabIndicator" class="gm-tab-indicator"></div>
+            <button type="button" role="tab" aria-selected="true" id="gmTabGame" class="gm-tab-btn" data-tab="all">
+                Game
+            </button>
+            <button type="button" role="tab" aria-selected="false" id="gmTabYourGame" class="gm-tab-btn" data-tab="saved">
+                Your game
+            </button>
+        </nav>
+
+        <!-- 3. Lưới danh sách thẻ game -->
+        <section id="gmGamesGrid" class="gm-games-grid" aria-label="Danh sách trò chơi"></section>
+
+        <!-- Trạng thái trống khi chuyển sang tab "Your game" -->
+        <div id="gmEmptySavedState" class="gm-empty-state hidden">
+            <div class="gm-empty-icon-box">
+                <svg viewBox="0 0 24 28" fill="none">
+                    <path d="M3 3C3 1.89543 3.89543 1 5 1H19C20.1046 1 21 1.89543 21 3V25.5L12 19.2L3 25.5V3Z" stroke="#090A8A" stroke-width="2.4" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <p class="gm-empty-title">Chưa có game nào được lưu</p>
+            <p class="gm-empty-desc">
+                Nhấn vào biểu tượng bookmark trên thẻ game để thêm vào mục Your game.
+            </p>
+        </div>
+
+        <!-- Menu trượt (Drawer) -->
+        <div id="gmDrawerBackdrop" class="gm-drawer-backdrop"></div>
+        <aside id="gmDrawerPanel" class="gm-drawer-panel" aria-hidden="true">
+            <div class="gm-drawer-header">
+                <span class="gm-drawer-title">Menu</span>
+                <button type="button" id="gmBtnCloseDrawer" class="gm-drawer-close-btn" aria-label="Đóng menu">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M6 6L18 18M18 6L6 18" stroke="#090A8A" stroke-width="3.2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+
+            <ul class="gm-drawer-list">
+                <li>
+                    <button type="button" data-menu-action="all" class="gm-drawer-item-btn">
+                        <span>Tất cả trò chơi</span>
+                        <span class="gm-drawer-badge">10</span>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" data-menu-action="saved" class="gm-drawer-item-btn">
+                        <span>Game đã lưu</span>
+                        <span id="gmDrawerSavedCount" class="gm-drawer-badge">0</span>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" data-menu-action="settings" class="gm-drawer-item-btn">
+                        <span>Cài đặt âm thanh</span>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" data-menu-action="info" class="gm-drawer-item-btn">
+                        <span>Thông tin phiên bản</span>
+                    </button>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Modal thông báo khi bấm nút chơi Game -->
+        <div id="gmModalBackdrop" class="gm-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="gmModalGameTitle">
+            <div class="gm-modal-card">
+                <div id="gmModalThumbContainer" class="gm-modal-thumb-preview"></div>
+                <h2 id="gmModalGameTitle" class="gm-modal-title">Game #1</h2>
+                <p id="gmModalGameSubtitle" class="gm-modal-subtitle">Sẵn sàng bắt đầu màn chơi mới!</p>
+                <div class="gm-modal-actions">
+                    <button type="button" id="gmBtnCloseModal" class="gm-modal-btn-secondary">Đóng</button>
+                    <button type="button" id="gmBtnConfirmPlay" class="gm-modal-btn-primary">Chơi ngay</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast thông báo -->
+        <div id="gmToastMsg" class="gm-toast-msg" role="status" aria-live="polite"></div>
+    </div>
+
+    <!-- ==================== MÀN HÌNH 6: STAGE (OVERLAY) ==================== -->
+    <div class="stage-screen" id="stageScreen" role="region" aria-label="Chọn ca sĩ biểu diễn">
+        <header class="st-header">
+            <button type="button" class="st-btn-back" id="stBtnBack" aria-label="Quay lại">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+            </button>
+            <h1 class="st-header-title">Chọn ca sĩ biểu diễn</h1>
+        </header>
+
+        <section class="st-grid-wrapper">
+            <div class="st-singer-grid" id="stSingerGrid"></div>
+        </section>
+
+        <footer class="st-footer">
+            <span class="st-selection-hint" id="stSelectionHint">Chạm thẻ để chọn</span>
+            <button type="button" class="st-btn-proceed" id="stBtnProceed">
+                <span>Vào biểu diễn</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="13 6 19 12 13 18"></polyline>
+                </svg>
+            </button>
+        </footer>
+
+        <div class="st-toast" id="stToastMessage"></div>
+    </div>
+
+
+  <!-- JS dùng chung (Nạp trước) -->
+  <script src="js/common.js"></script>
+  
+  <!-- JS riêng từng màn hình -->
+  <script src="js/home.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/stage.js"></script>
+
+
+  <script src="js/settings.js"></script>
+    <script src="js/wallpaper.js"></script>
+    <script src="js/bgm.js"></script>
+
+</body>
+</html>
+

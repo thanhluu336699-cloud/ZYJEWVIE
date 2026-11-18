@@ -1,0 +1,230 @@
+/* ==========================================================================
+   WALLPAPER SCREEN CSS (MÀN HÌNH CHỌN HÌNH NỀN & NHÂN VẬT - OVERLAY)
+   ========================================================================== */
+
+.wallpaper-screen {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  z-index: 110; /* Cao hơn settingsScreen (100) để đè lên mượt mà */
+  background: var(--bg-gradient);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--u-settings) * 3.2) calc(var(--u-settings) * 3.6);
+  padding-top: calc(env(safe-area-inset-top, 0px) + (var(--u-settings) * 3.2));
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + (var(--u-settings) * 3.2));
+  gap: calc(var(--u-settings) * 2.6);
+  overflow: hidden;
+
+  /* Hiệu ứng ẩn/hiện Overlay đồng bộ với Settings */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(6%);
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+}
+
+.wallpaper-screen.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+/* 1. THANH TIÊU ĐỀ TRÊN CÙNG */
+.wp-top-header {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u-settings) * 2.2);
+  flex-shrink: 0;
+}
+
+.wp-btn-back {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--u-settings) * 0.8);
+  transition: transform 0.15s ease;
+}
+
+.wp-btn-back:active {
+  transform: scale(0.9);
+}
+
+.wp-btn-back svg {
+  width: calc(var(--u-settings) * 5.2);
+  height: calc(var(--u-settings) * 5.2);
+  stroke: #0c126b;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.wp-header-title {
+  font-size: calc(var(--u-settings) * 4.8);
+  font-weight: 800;
+  color: #0c126b;
+  letter-spacing: calc(var(--u-settings) * 0.06);
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+/* 2. KHUNG PHẦN 1: MÀU NỀN (CUỘN NGANG) */
+.bg-section {
+  background-color: rgba(154, 184, 248, 0.72);
+  border-radius: calc(var(--u-settings) * 3.8);
+  padding: calc(var(--u-settings) * 3) 0 calc(var(--u-settings) * 3.4) calc(var(--u-settings) * 3.2);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u-settings) * 2.4);
+  box-shadow: 0 calc(var(--u-settings) * 0.8) calc(var(--u-settings) * 2.4) rgba(12, 18, 107, 0.08);
+}
+
+.section-label {
+  font-size: calc(var(--u-settings) * 3.6);
+  font-weight: 800;
+  color: #0c126b;
+  line-height: 1.2;
+}
+
+.bg-scroll-list {
+  display: flex;
+  gap: calc(var(--u-settings) * 2.2);
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-right: calc(var(--u-settings) * 3.2);
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.bg-scroll-list::-webkit-scrollbar {
+  display: none;
+}
+
+.bg-card {
+  flex: 0 0 calc((100% - 3 * calc(var(--u-settings) * 2.2)) / 4.25);
+  aspect-ratio: 3 / 4.6;
+  border-radius: calc(var(--u-settings) * 2.6);
+  overflow: hidden;
+  background-color: #ffffff;
+  border: calc(var(--u-settings) * 0.5) solid transparent;
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease;
+  position: relative;
+}
+
+.bg-card:active {
+  transform: scale(0.95);
+}
+
+.bg-card.active {
+  border-color: #ffea54;
+  box-shadow: 0 0 calc(var(--u-settings) * 2) rgba(255, 234, 84, 0.7);
+}
+
+.bg-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 3. KHUNG PHẦN 2: NHÂN VẬT (LƯỚI 3 CỘT CUỘN DỌC) */
+.char-section {
+  background-color: rgba(178, 201, 250, 0.78);
+  border-radius: calc(var(--u-settings) * 4.2);
+  padding: calc(var(--u-settings) * 3.4) calc(var(--u-settings) * 3.2) 0;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u-settings) * 2.8);
+  box-shadow: 0 calc(var(--u-settings) * 0.8) calc(var(--u-settings) * 3) rgba(12, 18, 107, 0.08);
+}
+
+.char-grid-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-content: start;
+  column-gap: calc(var(--u-settings) * 2.8);
+  row-gap: calc(var(--u-settings) * 3.4);
+  padding-bottom: calc(var(--u-settings) * 4.2);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.char-grid-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.char-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--u-settings) * 1.5);
+  cursor: pointer;
+  min-width: 0;
+  transition: transform 0.15s ease;
+}
+
+.char-item:active {
+  transform: scale(0.95);
+}
+
+.char-thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1.12;
+  border-radius: calc(var(--u-settings) * 3.2);
+  overflow: hidden;
+  background-color: #ffffff;
+  border: calc(var(--u-settings) * 0.5) solid transparent;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.char-item.active .char-thumb {
+  border-color: #ffea54;
+  box-shadow: 0 0 calc(var(--u-settings) * 2) rgba(255, 234, 84, 0.8);
+}
+
+.char-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.char-name-pill {
+  width: 100%;
+  background-color: #6260d1;
+  color: #ffffff;
+  font-size: calc(var(--u-settings) * 2.75);
+  font-weight: 700;
+  text-align: center;
+  padding: calc(var(--u-settings) * 1.1) calc(var(--u-settings) * 1.8);
+  border-radius: 999px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 calc(var(--u-settings) * 0.4) calc(var(--u-settings) * 1) rgba(42, 40, 120, 0.2);
+  transition: background-color 0.18s ease;
+}
+
+.char-item.active .char-name-pill {
+  background-color: #4643b8;
+}
+

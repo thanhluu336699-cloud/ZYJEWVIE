@@ -1,0 +1,325 @@
+/* ==========================================================================
+   STAGE SCREEN CSS (MÀN HÌNH CHỌN CA SĨ BIỂU DIỄN - OVERLAY)
+   ========================================================================== */
+
+.stage-screen {
+  --st-text-navy: #07177a;
+  --st-card-bg: #5ba0f0;
+  --st-card-bg-hover: #33679c;
+  --st-pill-bg: #4c6baa;
+  --st-selected-glow: #ffd166;
+  --st-plus-color: #243770;
+
+  --pad-x: clamp(14px, 4.5vw, 28px);
+  --pad-y: clamp(16px, 3dvh, 32px);
+  --grid-gap: clamp(10px, 3.2vw, 20px);
+  --card-radius: clamp(12px, 3.5vw, 18px);
+
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  z-index: 100;
+  background: var(--bg-gradient);
+  background-size: cover;
+  background-position: center;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  color: var(--st-text-navy);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: calc(var(--pad-y) + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(var(--pad-y) + env(safe-area-inset-bottom, 0px));
+  padding-left: calc(var(--pad-x) + env(safe-area-inset-left, 0px));
+  padding-right: calc(var(--pad-x) + env(safe-area-inset-right, 0px));
+  overflow: hidden;
+
+  /* Hiệu ứng trượt mở/đóng đồng bộ hệ thống */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(6%);
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+}
+
+.stage-screen.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+/* ================= HEADER ================= */
+.st-header {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 2.5vw, 14px);
+  flex-shrink: 0;
+  padding-bottom: clamp(12px, 2.2dvh, 22px);
+}
+
+.st-btn-back {
+  background: transparent;
+  border: none;
+  color: var(--st-text-navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(34px, 9vw, 44px);
+  height: clamp(34px, 9vw, 44px);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.st-btn-back:active {
+  transform: scale(0.88);
+  background-color: rgba(11, 25, 87, 0.1);
+}
+
+.st-btn-back svg {
+  width: clamp(22px, 6vw, 28px);
+  height: clamp(22px, 6vw, 28px);
+  stroke-width: 3.5;
+}
+
+.st-header-title {
+  font-family: 'Merriweather', serif;
+  font-weight: 900;
+  font-size: clamp(1.15rem, 5.2vw, 1.65rem);
+  color: var(--st-text-navy);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ================= LƯỚI CHỌN 3 CỘT ================= */
+.st-grid-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px 2px 12px 2px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.st-grid-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.st-singer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--grid-gap);
+  width: 100%;
+  align-content: start;
+}
+
+.st-singer-card {
+  background-color: var(--st-card-bg);
+  border-radius: var(--card-radius);
+  padding: clamp(7px, 2vw, 11px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  aspect-ratio: 0.78 / 1;
+  cursor: pointer;
+  position: relative;
+  border: 2.5px solid transparent;
+  box-shadow: 0 4px 10px rgba(11, 25, 87, 0.12);
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+              border-color 0.2s ease,
+              box-shadow 0.2s ease,
+              background-color 0.2s ease;
+}
+
+.st-singer-card:active {
+  transform: scale(0.95);
+}
+
+.st-singer-card.selected {
+  border-color: var(--st-selected-glow);
+  background-color: #478bcf;
+  box-shadow: 0 0 0 3px rgba(255, 209, 102, 0.35), 0 8px 18px rgba(11, 25, 87, 0.25);
+  transform: translateY(-2px);
+}
+
+.st-selected-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: clamp(20px, 5.5vw, 24px);
+  height: clamp(20px, 5.5vw, 24px);
+  background-color: var(--st-selected-glow);
+  color: var(--st-text-navy);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 2;
+}
+
+.st-singer-card.selected .st-selected-badge {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.st-avatar-frame {
+  width: 100%;
+  aspect-ratio: 1.05 / 1;
+  border-radius: clamp(8px, 2.2vw, 12px);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.st-avatar-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.st-name-pill {
+  width: 100%;
+  background-color: var(--st-pill-bg);
+  color: #ffffff;
+  border-radius: 999px;
+  padding: clamp(4px, 1.1dvh, 6px) clamp(6px, 1.8vw, 10px);
+  margin-top: clamp(6px, 1.4dvh, 9px);
+  text-align: center;
+  font-size: clamp(0.68rem, 2.8vw, 0.85rem);
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+
+.st-add-card {
+  justify-content: center;
+  align-items: center;
+  background-color: var(--st-card-bg);
+}
+
+.st-add-card:hover {
+  background-color: var(--st-card-bg-hover);
+}
+
+.st-plus-icon {
+  width: clamp(28px, 8vw, 38px);
+  height: clamp(28px, 8vw, 38px);
+  color: var(--st-plus-color);
+  transition: transform 0.2s ease;
+}
+
+.st-add-card:active .st-plus-icon {
+  transform: rotate(90deg) scale(0.9);
+}
+
+/* ================= FOOTER ================= */
+.st-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: clamp(10px, 2dvh, 18px);
+  flex-shrink: 0;
+}
+
+.st-selection-hint {
+  font-size: clamp(0.75rem, 3vw, 0.88rem);
+  color: rgba(11, 25, 87, 0.78);
+  font-weight: 600;
+}
+
+.st-btn-proceed {
+  background: transparent;
+  border: none;
+  color: var(--st-text-navy);
+  font-family: 'Merriweather', serif;
+  font-weight: 900;
+  font-size: clamp(1.05rem, 4.5vw, 1.35rem);
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(6px, 2vw, 10px);
+  padding: clamp(8px, 1.8dvh, 12px) clamp(10px, 2.5vw, 16px);
+  margin-right: calc(clamp(10px, 2.5vw, 16px) * -1);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.2s ease;
+}
+
+.st-btn-proceed:active {
+  transform: scale(0.94);
+  background-color: rgba(11, 25, 87, 0.1);
+}
+
+.st-btn-proceed svg {
+  width: clamp(20px, 5vw, 24px);
+  height: clamp(20px, 5vw, 24px);
+  stroke-width: 2.8;
+  transition: transform 0.2s ease;
+}
+
+.st-btn-proceed:hover svg {
+  transform: translateX(4px);
+}
+
+/* Toast thông báo */
+.st-toast {
+  position: fixed;
+  top: calc(16px + env(safe-area-inset-top, 0px));
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background: var(--st-text-navy);
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(7, 23, 122, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s ease;
+  z-index: 160;
+  white-space: nowrap;
+}
+
+.st-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-height: 600px) {
+  .stage-screen {
+    --pad-y: 10px;
+    --grid-gap: 8px;
+  }
+  .st-header {
+    padding-bottom: 8px;
+  }
+  .st-singer-card {
+    aspect-ratio: 0.85 / 1;
+    padding: 5px;
+  }
+  .st-name-pill {
+    margin-top: 4px;
+    padding: 3px 6px;
+  }
+}
+
