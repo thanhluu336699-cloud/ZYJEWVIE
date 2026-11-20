@@ -33,7 +33,7 @@
 
 html, body {
   width: 100%;
-  height: 100dvh;
+  min-height: 100%;
   overflow: hidden;
   overscroll-behavior: none;
   /* Hình nền dùng chung toàn hệ thống (hỗ trợ cả gradient và url ảnh) */
@@ -41,9 +41,10 @@ html, body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  margin: 0;
-  padding: 0;
+
 }
+
+
 
 /* Class tiện ích nếu muốn áp dụng nền chung cho bất kỳ màn hình phủ (overlay) nào */
 .shared-bg {

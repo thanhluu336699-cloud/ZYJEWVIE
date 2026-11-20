@@ -75,7 +75,7 @@ const GameCore = (() => {
   // 1. Tính toán tỉ lệ fluid co giãn theo mọi màn hình điện thoại
   function syncFluidRatio() {
     const vw = window.innerWidth;
-    const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    const vh = window.screen.height;
     const unit = Math.min(vw / REF_W, vh / REF_H) * 5.2;
     document.documentElement.style.setProperty('--u-settings', `${unit.toFixed(4)}px`);
   }
