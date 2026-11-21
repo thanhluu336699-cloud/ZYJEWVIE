@@ -60,17 +60,27 @@ const GameCore = (() => {
   // ========================================================
   // DANH SÁCH CA SĨ DÙNG CHUNG TOÀN GAME (Chỉnh tên & ảnh tại đây)
   // ========================================================
+  // 1. DANH SÁCH CA SĨ (Tên & giá dùng chung)
   const CHARACTERS = [
-    { id: "char_1", name: "Idol 1", image: "assets/images/idol1.png", avatar: "assets/images/idol1.png" },
-    { id: "char_2", name: "Tên 2", image: DEFAULT_PLACEHOLDER, avatar: DEFAULT_PLACEHOLDER },
-    { id: "char_3", name: "Tên 3", image: DEFAULT_PLACEHOLDER, avatar: DEFAULT_PLACEHOLDER },
-    { id: "char_4", name: "Tên 4", image: DEFAULT_PLACEHOLDER, avatar: DEFAULT_PLACEHOLDER },
-    { id: "char_5", name: "Tên 5", image: DEFAULT_PLACEHOLDER, avatar: DEFAULT_PLACEHOLDER },
-    { id: "char_6", name: "Tên 6", image: DEFAULT_PLACEHOLDER, avatar: DEFAULT_PLACEHOLDER },
-    { id: "char_7", name: "Tên 7", image: DEFAULT_PLACEHOLDER, avatar: DEFAULT_PLACEHOLDER },
-    { id: "char_8", name: "Tên 8", image: DEFAULT_PLACEHOLDER, avatar: DEFAULT_PLACEHOLDER },
-    { id: "char_9", name: "Tên 9", image: DEFAULT_PLACEHOLDER, avatar: DEFAULT_PLACEHOLDER }
+    { id: "char_1", name: "Tên ca sĩ 1", price: "1110B" },
+    { id: "char_2", name: "Tên ca sĩ 2", price: "1500B" },
+    { id: "char_3", name: "Tên ca sĩ 3", price: "2000B" }
   ];
+
+  // 2. ẢNH DÙNG CHUNG LOẠI 1 (Người thật) - Tự thêm link theo id ca sĩ
+  const REAL_IMAGES = {
+    char_1: "assets/images/singer1_real.png",
+    char_2: "assets/images/singer2_real.png",
+    char_3: "assets/images/singer3_real.png"
+  };
+
+  // 3. ẢNH DÙNG CHUNG LOẠI 2 (Chibi) - Tự thêm link theo id ca sĩ
+  const CHIBI_IMAGES = {
+    char_1: "assets/images/idol1.png",
+    char_2: "assets/images/singer2_chibi.png",
+    char_3: "assets/images/singer3_chibi.png"
+  };
+
 
   // 1. Tính toán tỉ lệ fluid co giãn theo mọi màn hình điện thoại
   function syncFluidRatio() {
@@ -110,12 +120,13 @@ const GameCore = (() => {
 
     const mainCharEl = document.getElementById('mainCharacter');
     if (mainCharEl) {
-      mainCharEl.src = found.image;
+      mainCharEl.src = CHIBI_IMAGES[found.id] || DEFAULT_PLACEHOLDER; // Đổi thành CHIBI_IMAGES[found.id] nếu Home dùng chibi
       mainCharEl.alt = found.name;
     }
 
     localStorage.setItem('idol_game_char_id', found.id);
   }
+
 
   function getSelectedCharacterId() {
     return localStorage.getItem('idol_game_char_id') || CHARACTERS[0].id;
@@ -148,6 +159,8 @@ const GameCore = (() => {
     init,
     BACKGROUNDS,
     CHARACTERS,
+    REAL_IMAGES,
+    CHIBI_IMAGES,
     openOverlay,
     closeOverlay,
     setGlobalBackground,
@@ -156,6 +169,7 @@ const GameCore = (() => {
     getSelectedCharacterId,
     getCurrentCharacter
   };
+
 })();
 
 document.addEventListener('DOMContentLoaded', GameCore.init);

@@ -1,0 +1,259 @@
+/* ==========================================================================
+   SHOP SCREEN CSS (MÀN HÌNH CỬA HÀNG - OVERLAY)
+   ========================================================================== */
+
+.shop-screen {
+  --sh-navy: #170C59;
+  --sh-card-bg: #4B6CE6;
+  --sh-pill-bg: #708EF4;
+
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  z-index: 90; /* Thấp hơn bottom-nav (95) để giữ thanh 5 tab ở dưới cùng */
+  background: var(--bg-gradient);
+  background-size: cover;
+  background-position: center;
+  font-family: 'Be Vietnam Pro', sans-serif;
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.22s ease, visibility 0.18s ease;
+}
+
+.shop-screen.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Header & Tabs cố định phía trên */
+.sh-header {
+  flex-shrink: 0;
+  padding-top: max(calc(var(--u-settings) * 3.8), env(safe-area-inset-top));
+  padding-bottom: calc(var(--u-settings) * 1.8);
+  text-align: center;
+  z-index: 10;
+}
+
+.sh-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  font-size: calc(var(--u-settings) * 5.6);
+  color: var(--sh-navy);
+  letter-spacing: calc(var(--u-settings) * 0.1);
+  line-height: 1.15;
+  margin-bottom: calc(var(--u-settings) * 2.8);
+  text-transform: uppercase;
+}
+
+.sh-category-tabs {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 calc(var(--u-settings) * 3.8);
+  gap: calc(var(--u-settings) * 0.8);
+}
+
+.sh-tab-btn {
+  background: transparent;
+  border: none;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 800;
+  font-size: calc(var(--u-settings) * 3.2);
+  color: var(--sh-navy);
+  padding: calc(var(--u-settings) * 0.8) calc(var(--u-settings) * 1.4) calc(var(--u-settings) * 1.2);
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.15s ease;
+  white-space: nowrap;
+}
+
+.sh-tab-btn:active {
+  transform: scale(0.95);
+}
+
+.sh-tab-btn.active::after {
+  content: '';
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 0;
+  height: calc(var(--u-settings) * 0.55);
+  background-color: var(--sh-navy);
+  border-radius: 99px;
+}
+
+/* Vùng cuộn danh sách thẻ (chừa đáy cho bottom-nav) */
+.sh-items-scroll-area {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding: calc(var(--u-settings) * 6.5) calc(var(--u-settings) * 3.6) calc(var(--u-main) * 22);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+
+.sh-items-scroll-area::-webkit-scrollbar {
+  display: none;
+}
+
+/* Lưới tự tăng số cột theo tỷ lệ chiều rộng màn hình */
+.sh-items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--u-settings) * 19), 1fr));
+  column-gap: calc(var(--u-settings) * 2.2);
+  row-gap: calc(var(--u-settings) * 6.2);
+  align-items: stretch;
+  justify-items: center;
+  width: 100%;
+}
+
+/* Thẻ Ca Sĩ / Vật phẩm */
+.sh-singer-card {
+  position: relative;
+  width: 100%;
+  background-color: var(--sh-card-bg);
+  border-radius: calc(var(--u-settings) * 2.2);
+  padding: calc(var(--u-settings) * 5.6) calc(var(--u-settings) * 1) calc(var(--u-settings) * 1.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--u-settings) * 1.1);
+  box-shadow: 0 calc(var(--u-settings) * 0.8) calc(var(--u-settings) * 2) rgba(23, 12, 89, 0.18);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.sh-singer-card:active {
+  transform: scale(0.95);
+}
+
+/* Khung avatar tròn nhô lên đỉnh thẻ, luôn cân tròn */
+.sh-avatar-circle {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(var(--u-settings) * 8.4);
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: calc(var(--u-settings) * 0.4) solid #93B4FA;
+  background: #D8EEFF;
+  overflow: hidden;
+  box-shadow: 0 calc(var(--u-settings) * 0.4) calc(var(--u-settings) * 1.2) rgba(15, 23, 42, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sh-avatar-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.sh-singer-name {
+  width: 100%;
+  font-size: calc(var(--u-settings) * 2.2);
+  font-weight: 700;
+  color: #FFFFFF;
+  text-align: center;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.sh-price-pill {
+  background-color: var(--sh-pill-bg);
+  color: #FFFFFF;
+  font-size: calc(var(--u-settings) * 2.05);
+  font-weight: 800;
+  padding: calc(var(--u-settings) * 0.5) calc(var(--u-settings) * 1.2);
+  min-width: 78%;
+  max-width: 92%;
+  border-radius: calc(var(--u-settings) * 1.1);
+  text-align: center;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+}
+
+/* Modal xác nhận mua hàng */
+.sh-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(3px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 150;
+  padding: calc(var(--u-settings) * 4);
+}
+
+.sh-modal-overlay.show {
+  display: flex;
+}
+
+.sh-modal-box {
+  background: #FFFFFF;
+  border-radius: calc(var(--u-settings) * 3.2);
+  padding: calc(var(--u-settings) * 4);
+  width: 100%;
+  max-width: calc(var(--u-settings) * 58);
+  text-align: center;
+  box-shadow: 0 calc(var(--u-settings) * 2.4) calc(var(--u-settings) * 6) rgba(0, 0, 0, 0.35);
+}
+
+.sh-modal-title {
+  font-size: calc(var(--u-settings) * 3.4);
+  font-weight: 800;
+  color: var(--sh-navy);
+  margin-bottom: calc(var(--u-settings) * 1.2);
+}
+
+.sh-modal-desc {
+  font-size: calc(var(--u-settings) * 2.7);
+  color: #475569;
+  margin-bottom: calc(var(--u-settings) * 3.2);
+  line-height: 1.4;
+}
+
+.sh-modal-actions {
+  display: flex;
+  gap: calc(var(--u-settings) * 2);
+}
+
+.sh-modal-btn {
+  flex: 1;
+  padding: calc(var(--u-settings) * 1.9) 0;
+  border-radius: calc(var(--u-settings) * 1.6);
+  border: none;
+  font-weight: 700;
+  font-size: calc(var(--u-settings) * 2.7);
+  cursor: pointer;
+}
+
+.sh-btn-cancel {
+  background: #E2E8F0;
+  color: #334155;
+}
+
+.sh-btn-buy {
+  background: var(--sh-card-bg);
+  color: #FFFFFF;
+}
+

@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
       item.className = `char-item ${char.id === selectedCharId ? 'active' : ''}`;
       item.innerHTML = `
         <div class="char-thumb">
-          <img src="${char.avatar || char.image}" alt="${char.name}" loading="lazy">
+          <img src="${GameCore.CHIBI_IMAGES[char.id]}" alt="${char.name}" loading="lazy">
         </div>
         <div class="char-name-pill">${char.name}</div>
       `;

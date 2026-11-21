@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
       card.className = `st-singer-card ${isSelected ? 'selected' : ''}`;
 
       // Ưu tiên ảnh trang phục (nếu sau này có), sau đó đến avatar/image dùng chung
-      const displayImg = singer.outfitImage || singer.avatar || singer.image;
+      const displayImg = singer.outfitImage || GameCore.CHIBI_IMAGES[singer.id]; 
 
       card.innerHTML = `
         <div class="st-selected-badge">✓</div>

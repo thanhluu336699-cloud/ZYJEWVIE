@@ -11,17 +11,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 2. Chuyển đổi trạng thái Active của thanh điều hướng 5 tab
-  const navItems = document.querySelectorAll('.nav-item');
-  navItems.forEach((item) => {
-    item.addEventListener('click', () => {
-      navItems.forEach((btn) => btn.classList.remove('active'));
-      item.classList.add('active');
+// 2. Chuyển đổi trạng thái Active của thanh điều hướng 5 tab
+const navItems = document.querySelectorAll('.nav-item');
+navItems.forEach((item) => {
+  item.addEventListener('click', () => {
+    navItems.forEach((btn) => btn.classList.remove('active'));
+    item.classList.add('active');
 
-      const selectedTab = item.getAttribute('data-tab');
-      console.log('Chuyển sang tab:', selectedTab);
-    });
+    const selectedTab = item.getAttribute('data-tab');
+    if (selectedTab === 'shop') {
+      if (window.ShopScreen) window.ShopScreen.refresh();
+      GameCore.openOverlay('shopScreen');
+    } else {
+      GameCore.closeOverlay('shopScreen');
+    }
   });
+});
 
   // 3. Xử lý 2 nút chức năng lớn (STAGE / GAME)
   const actionButtons = document.querySelectorAll('.main-action-btn');

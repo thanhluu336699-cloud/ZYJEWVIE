@@ -29,6 +29,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/bgm.css" />
 
+    <!-- Font & CSS cho màn hình Shop -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/shop.css" />
+
+
 </head>
 <body>
     <!-- ==================== MÀN HÌNH 1: HOME (MÀN HÌNH CHÍNH) ==================== -->
@@ -183,9 +188,6 @@
         </section>
         </main>
 
-        <footer class="settings-footer">
-        <div class="brand-watermark">ZYJEWVIE</div>
-        </footer>
     </div>
 
     <!-- ==================== MÀN HÌNH 3: HÌNH NỀN & NHÂN VẬT (OVERLAY) ==================== -->
@@ -392,20 +394,47 @@
         <div class="st-toast" id="stToastMessage"></div>
     </div>
 
+    <!-- ==================== MÀN HÌNH 7: SHOP (OVERLAY) ==================== -->
+    <div class="shop-screen" id="shopScreen" role="region" aria-label="Cửa hàng">
+        <header class="sh-header">
+            <h1 class="sh-title">CỬA HÀNG CẮT CỔ</h1>
+            <nav class="sh-category-tabs">
+                <button type="button" class="sh-tab-btn active" data-tab="casi">Ca sĩ</button>
+                <button type="button" class="sh-tab-btn" data-tab="trangphuc">Trang Phục</button>
+                <button type="button" class="sh-tab-btn" data-tab="hieuung">Hiệu ứng</button>
+                <button type="button" class="sh-tab-btn" data-tab="premium">Premium</button>
+            </nav>
+        </header>
 
-  <!-- JS dùng chung (Nạp trước) -->
-  <script src="js/common.js"></script>
+        <main class="sh-items-scroll-area" id="shScrollArea">
+            <div class="sh-items-grid" id="shItemsGrid"></div>
+        </main>
+
+        <div class="sh-modal-overlay" id="shModalOverlay">
+            <div class="sh-modal-box">
+                <div class="sh-modal-title" id="shModalTitle">Mua vật phẩm</div>
+                <div class="sh-modal-desc" id="shModalDesc">Xác nhận mua với giá 1110B?</div>
+                <div class="sh-modal-actions">
+                    <button type="button" class="sh-modal-btn sh-btn-cancel" id="shBtnCancel">Hủy</button>
+                    <button type="button" class="sh-modal-btn sh-btn-buy" id="shBtnBuy">Mua ngay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- JS dùng chung (Nạp trước) -->
+<script src="js/common.js"></script>
   
-  <!-- JS riêng từng màn hình -->
-  <script src="js/home.js"></script>
+<!-- JS riêng từng màn hình -->
+<script src="js/home.js"></script>
     <script src="js/game.js"></script>
     <script src="js/stage.js"></script>
 
-
-  <script src="js/settings.js"></script>
+<script src="js/settings.js"></script>
     <script src="js/wallpaper.js"></script>
     <script src="js/bgm.js"></script>
 
+<script src="js/shop.js"></script>
 </body>
 </html>
 

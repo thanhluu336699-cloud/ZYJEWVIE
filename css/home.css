@@ -275,6 +275,9 @@
   align-items: center;
   box-shadow: 0 calc(-1 * var(--u-main)) calc(3 * var(--u-main)) rgba(25, 40, 85, 0.18);
   flex-shrink: 0;
+  position: relative;
+  z-index: 95;
+
 }
 
 .nav-item {
