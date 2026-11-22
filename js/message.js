@@ -315,22 +315,93 @@ Trước khi bắt đầu trải nghiệm game, vui lòng dành chút thời gia
     renderMessages();
   }
 
-  // Cổng kết nối backend/realtime thật (Firebase / Supabase / WebSocket / REST)
+    // ==========================================================================
+  // KẾT NỐI REALTIME QUA FIREBASE REST + SSE (KHÔNG CẦN CÀI THƯ VIỆN)
+  // ==========================================================================
+  const FIREBASE_DB_URL = 'https://https://zyjewvie-ae106-default-rtdb.asia-southeast1.firebasedatabase.app';
+  const renderedFirebaseKeys = new Set();
+
   window.ZyjewvieChatTransport = {
     currentUserId,
-    send(roomMessagePacket) {
-      if (chatChannel) {
-        chatChannel.postMessage({
-          type: 'ROOM_MESSAGE',
-          originTabId: clientTabId,
-          ...roomMessagePacket
+
+    // Gửi tin nhắn lên server để tất cả người chơi đều nhận được
+    async send(roomMessagePacket) {
+      if (!FIREBASE_DB_URL || FIREBASE_DB_URL.includes('THAY-LINK-FIREBASE')) return;
+
+      // Hiện tại đẩy kênh 'world' (Thế giới) lên server chung
+      if (roomMessagePacket.roomId !== 'world') return;
+
+      try {
+        const res = await fetch(`${FIREBASE_DB_URL}/rooms/world/messages.json`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            roomId: 'world',
+            roomType: 'public',
+            message: roomMessagePacket.message,
+            createdAt: Date.now()
+          })
         });
+        const data = await res.json();
+        if (data && data.name) {
+          renderedFirebaseKeys.add(data.name); // Đánh dấu để không bị hiện trùng tin của chính mình
+        }
+      } catch (err) {
+        console.error('Lỗi gửi tin kênh Thế giới:', err);
       }
     },
+
     receive(roomMessagePacket) {
       appendIncomingMessage(roomMessagePacket);
     }
   };
+
+  // Lắng nghe tin nhắn mới theo thời gian thực từ tất cả người chơi khác
+  function listenWorldChannelRealtime() {
+    if (!FIREBASE_DB_URL || FIREBASE_DB_URL.includes('THAY-LINK-FIREBASE')) return;
+
+    // Chỉ lấy 50 tin nhắn gần nhất của kênh Thế giới
+    const streamUrl = `${FIREBASE_DB_URL}/rooms/world/messages.json?orderBy="$key"&limitToLast=50`;
+    const eventSource = new EventSource(streamUrl);
+
+    function handleIncomingRecord(key, record) {
+      if (!key || renderedFirebaseKeys.has(key)) return;
+      if (!record || !record.message) return;
+
+      renderedFirebaseKeys.add(key);
+      appendIncomingMessage({
+        roomId: 'world',
+        roomType: 'public',
+        message: record.message
+      });
+    }
+
+    eventSource.addEventListener('put', (e) => {
+      const payload = JSON.parse(e.data);
+      if (!payload || !payload.data) return;
+
+      if (payload.path === '/') {
+        // Tải lịch sử tin nhắn khi mới mở game
+        Object.keys(payload.data).sort().forEach((key) => {
+          handleIncomingRecord(key, payload.data[key]);
+        });
+      } else {
+        // Có người chơi khác vừa nhắn tin mới
+        const key = payload.path.replace(/^\//, '');
+        handleIncomingRecord(key, payload.data);
+      }
+    });
+
+    eventSource.addEventListener('patch', (e) => {
+      const payload = JSON.parse(e.data);
+      if (!payload || !payload.data) return;
+      Object.keys(payload.data).forEach((key) => {
+        handleIncomingRecord(key, payload.data[key]);
+      });
+    });
+  }
+
+  listenWorldChannelRealtime();
 
   function sendMessageToActiveChat(rawText) {
     const cleanText = String(rawText || '').trim().slice(0, MAX_MSG_LEN);
