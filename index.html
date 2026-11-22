@@ -29,11 +29,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/bgm.css" />
 
-    <!-- Font & CSS cho màn hình Shop -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/shop.css" />
+<!-- Font & CSS cho màn hình Shop -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/shop.css" />
 
-
+<link rel="stylesheet" href="css/benefits.css" />
 </head>
 <body>
     <!-- ==================== MÀN HÌNH 1: HOME (MÀN HÌNH CHÍNH) ==================== -->
@@ -422,6 +422,34 @@
         </div>
     </div>
 
+    <!-- ==================== MÀN HÌNH 8: BENEFITS (OVERLAY) ==================== -->
+    <div class="benefits-screen" id="benefitsScreen" role="region" aria-label="Điểm danh và phúc lợi">
+        <div id="bnToast" class="bn-toast">
+            <span style="color: #f6c445;">★</span>
+            <span id="bnToastMsg">Nhận thưởng thành công!</span>
+        </div>
+
+        <header class="bn-header">
+            <h1 class="bn-brand-title bn-serif">ZYJEWVIE</h1>
+        </header>
+
+        <section class="bn-glass-panel">
+            <h2 class="bn-section-title bn-serif">CHECK-IN 6 DAYS</h2>
+            <div id="bnDaysGrid" class="bn-days-grid"></div>
+            <div class="bn-checkin-wrap">
+                <button id="bnCheckinBtn" type="button" class="bn-pill-btn bn-checkin-btn bn-serif">
+                    Check in
+                </button>
+            </div>
+        </section>
+
+        <section class="bn-glass-panel bn-general-panel">
+            <h2 class="bn-section-title bn-serif">GENERAL BENEFITS</h2>
+            <div id="bnBenefitsList" class="bn-benefits-list"></div>
+        </section>
+    </div>
+
+
 <!-- JS dùng chung (Nạp trước) -->
 <script src="js/common.js"></script>
   
@@ -435,6 +463,7 @@
     <script src="js/bgm.js"></script>
 
 <script src="js/shop.js"></script>
+<script src="js/benefits.js"></script>
 </body>
 </html>
 

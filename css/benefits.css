@@ -1,0 +1,256 @@
+/* ==========================================================================
+   BENEFITS SCREEN CSS (MÀN HÌNH ĐIỂM DANH & PHÚC LỢI - OVERLAY)
+   ========================================================================== */
+
+.benefits-screen {
+  --bn-navy: #071936;
+  --bn-gold: #f6c445;
+  --bn-card-glass: rgba(255, 255, 255, 0.28);
+  --bn-day-bg: rgba(58, 99, 184, 0.34);
+  --bn-day-claimed: rgba(34, 71, 148, 0.65);
+  --bn-btn-blue: #5882d6;
+  --bn-btn-hover: #4771c7;
+
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  z-index: 90; /* Thấp hơn bottom-nav (95) để giữ thanh 5 tab ở dưới cùng */
+  background: var(--bg-gradient);
+  background-size: cover;
+  background-position: center;
+  font-family: 'Inter', sans-serif;
+
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--u-settings) * 3.4) calc(var(--u-settings) * 3.6) calc(var(--u-main) * 20);
+  padding-top: max(calc(var(--u-settings) * 3.6), env(safe-area-inset-top));
+  gap: calc(var(--u-settings) * 2.4);
+  overflow: hidden;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.18s ease, visibility 0.18s ease;
+}
+
+.benefits-screen.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.bn-serif {
+  font-family: 'Lora', Georgia, serif;
+  font-weight: 700;
+}
+
+/* 1. Tiêu đề thương hiệu */
+.bn-header {
+  padding: 0 calc(var(--u-settings) * 0.6);
+  flex-shrink: 0;
+}
+
+.bn-brand-title {
+  color: #dce7fc;
+  font-size: calc(var(--u-settings) * 4.4);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* 2. Khung kính mờ dùng chung */
+.bn-glass-panel {
+  background: var(--bn-card-glass);
+  border-radius: calc(var(--u-settings) * 3.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: calc(var(--u-settings) * 2.6) calc(var(--u-settings) * 2.8);
+}
+
+.bn-section-title {
+  color: var(--bn-navy);
+  font-size: calc(var(--u-settings) * 3.1);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin-bottom: calc(var(--u-settings) * 2);
+}
+
+/* Lưới điểm danh 6 ngày */
+.bn-days-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: calc(var(--u-settings) * 1.4);
+  margin-bottom: calc(var(--u-settings) * 2.4);
+}
+
+.bn-day-card {
+  background: var(--bn-day-bg);
+  border-radius: calc(var(--u-settings) * 1.8);
+  padding: calc(var(--u-settings) * 1.8) calc(var(--u-settings) * 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--u-settings) * 1.4);
+  cursor: pointer;
+  transition: transform 0.16s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bn-day-card:active {
+  transform: scale(0.94);
+}
+
+.bn-day-card.active-day {
+  box-shadow: 0 0 0 calc(var(--u-settings) * 0.4) var(--bn-gold);
+  background: rgba(58, 99, 184, 0.52);
+}
+
+.bn-day-card.claimed {
+  background: var(--bn-day-claimed);
+  opacity: 0.88;
+}
+
+.bn-day-reward {
+  color: var(--bn-gold);
+  font-weight: 700;
+  font-size: calc(var(--u-settings) * 2.5);
+  line-height: 1;
+}
+
+.bn-day-label {
+  color: var(--bn-navy);
+  font-size: calc(var(--u-settings) * 2.15);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Nút viên thuốc (Check in & Go) */
+.bn-checkin-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.bn-pill-btn {
+  background-color: var(--bn-btn-blue);
+  color: var(--bn-navy);
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  box-shadow: 0 calc(var(--u-settings) * 0.4) calc(var(--u-settings) * 1.2) rgba(7, 25, 54, 0.14);
+  transition: transform 0.14s ease, background-color 0.2s ease;
+}
+
+.bn-pill-btn:active {
+  transform: scale(0.95);
+}
+
+.bn-pill-btn.done-state {
+  background-color: rgba(7, 25, 54, 0.24);
+  color: #ffffff;
+}
+
+.bn-checkin-btn {
+  width: 62%;
+  padding: calc(var(--u-settings) * 1.7) 0;
+  font-size: calc(var(--u-settings) * 2.9);
+  text-align: center;
+}
+
+/* 3. Khung General Benefits */
+.bn-general-panel {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.bn-benefits-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: calc(var(--u-settings) * 1.6);
+  scrollbar-width: none;
+}
+
+.bn-benefits-list::-webkit-scrollbar {
+  display: none;
+}
+
+.bn-benefit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--u-settings) * 1.8);
+}
+
+.bn-benefit-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: calc(var(--u-settings) * 0.5);
+}
+
+.bn-reward-line {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u-settings) * 1);
+}
+
+.bn-coin-svg {
+  width: calc(var(--u-settings) * 3.4);
+  height: calc(var(--u-settings) * 3.4);
+  flex-shrink: 0;
+}
+
+.bn-reward-amount {
+  color: var(--bn-navy);
+  font-size: calc(var(--u-settings) * 2.65);
+  line-height: 1;
+}
+
+.bn-benefit-desc {
+  color: #ffffff;
+  font-size: calc(var(--u-settings) * 2.25);
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bn-go-btn {
+  flex-shrink: 0;
+  padding: calc(var(--u-settings) * 1.1) calc(var(--u-settings) * 4.2);
+  font-size: calc(var(--u-settings) * 2.4);
+}
+
+/* Toast thông báo */
+.bn-toast {
+  position: fixed;
+  top: max(calc(var(--u-settings) * 3.4), env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%) translateY(-140%);
+  background: rgba(7, 25, 54, 0.92);
+  color: #ffffff;
+  padding: calc(var(--u-settings) * 1.8) calc(var(--u-settings) * 3.4);
+  border-radius: 999px;
+  font-size: calc(var(--u-settings) * 2.5);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u-settings) * 1.4);
+  z-index: 160;
+  box-shadow: 0 calc(var(--u-settings) * 1.4) calc(var(--u-settings) * 3.6) rgba(0, 0, 0, 0.25);
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.bn-toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+

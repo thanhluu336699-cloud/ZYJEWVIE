@@ -19,11 +19,19 @@ navItems.forEach((item) => {
     item.classList.add('active');
 
     const selectedTab = item.getAttribute('data-tab');
+
     if (selectedTab === 'shop') {
       if (window.ShopScreen) window.ShopScreen.refresh();
       GameCore.openOverlay('shopScreen');
     } else {
       GameCore.closeOverlay('shopScreen');
+    }
+
+    if (selectedTab === 'benefits') {
+      if (window.BenefitsScreen) window.BenefitsScreen.refresh();
+      GameCore.openOverlay('benefitsScreen');
+    } else {
+      GameCore.closeOverlay('benefitsScreen');
     }
   });
 });
