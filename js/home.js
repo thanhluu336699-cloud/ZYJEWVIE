@@ -33,6 +33,14 @@ navItems.forEach((item) => {
     } else {
       GameCore.closeOverlay('benefitsScreen');
     }
+
+        if (selectedTab === 'message') {
+      if (window.MessageScreen) window.MessageScreen.refresh();
+      GameCore.openOverlay('messageScreen');
+    } else {
+      GameCore.closeOverlay('messageScreen');
+    }
+
   });
 });
 

@@ -32,8 +32,9 @@
 <!-- Font & CSS cho màn hình Shop -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/shop.css" />
-
 <link rel="stylesheet" href="css/benefits.css" />
+<link rel="stylesheet" href="css/message.css" />
+
 </head>
 <body>
     <!-- ==================== MÀN HÌNH 1: HOME (MÀN HÌNH CHÍNH) ==================== -->
@@ -449,6 +450,64 @@
         </section>
     </div>
 
+    <!-- ==================== MÀN HÌNH 9: MESSAGE (OVERLAY) ==================== -->
+    <div class="message-screen" id="messageScreen" role="region" aria-label="Tin nhắn">
+        <header class="msg-header">
+            <h1 class="msg-brand-title">ZYJEWVIE</h1>
+
+            <div class="msg-search-bar">
+                <svg class="msg-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="7.5"></circle>
+                    <line x1="20.5" y1="20.5" x2="16.2" y2="16.2"></line>
+                </svg>
+
+                <div class="msg-search-input-wrap">
+                    <span id="msgFakeCursor" class="msg-fake-cursor"></span>
+                    <input id="msgSearchInput" class="msg-search-input" type="text" autocomplete="off" aria-label="Tìm kiếm tin nhắn" />
+                    <button id="msgClearSearchBtn" class="msg-clear-btn hidden" type="button">✕</button>
+                </div>
+            </div>
+
+            <div class="msg-filter-row">
+                <button id="msgUnreadFilterBtn" class="msg-unread-btn" type="button">Chưa đọc</button>
+                <button id="msgNewDmBtn" class="msg-unread-btn" type="button">+ Chat riêng</button>
+            </div>
+
+            <form id="msgNewDmForm" class="msg-dm-form hidden">
+                <input id="msgDmTargetInput" class="msg-dm-input" type="text" placeholder="Nhập ID người chơi (VD: user_102)..." autocomplete="off" />
+                <button type="submit" class="msg-dm-open-btn">Mở</button>
+            </form>
+
+
+        </header>
+
+        <div id="msgListContainer" class="msg-list-container"></div>
+
+        <!-- Ngăn kéo chi tiết đoạn chat -->
+        <section id="msgChatDrawer" class="msg-chat-drawer hidden">
+            <div class="msg-chat-header">
+                <button type="button" id="msgCloseChatBtn" class="msg-chat-back-btn" aria-label="Quay lại">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+                <div id="msgChatDetailAvatar" class="msg-chat-avatar"></div>
+                <div class="msg-chat-meta">
+                    <h3 id="msgChatDetailName" class="msg-chat-name">Admine</h3>
+                    <span class="msg-chat-status">
+                        <span class="msg-online-dot"></span> Trực tuyến
+                    </span>
+                </div>
+            </div>
+
+            <div id="msgMessagesBox" class="msg-chat-box"></div>
+
+            <form id="msgSendChatForm" class="msg-chat-form">
+                <input id="msgReplyInput" class="msg-reply-input" type="text" placeholder="Nhập tin nhắn..." autocomplete="off" />
+                <button type="submit" class="msg-send-btn">Gửi</button>
+            </form>
+        </section>
+    </div>
 
 <!-- JS dùng chung (Nạp trước) -->
 <script src="js/common.js"></script>
@@ -464,6 +523,9 @@
 
 <script src="js/shop.js"></script>
 <script src="js/benefits.js"></script>
+<script src="js/message.js"></script>
+
+
 </body>
 </html>
 
